@@ -1,12 +1,11 @@
 {
   "name": "tvControl",
   "version": "0.0.0",
+  "appPath": "client/app",
+  "testPath": "client/test/spec",
   "dependencies": {
     "angular": "~1.0.7",
-    "json3": "~3.2.4",
-    "jquery": "~1.9.1",
-    "bootstrap-sass": "~2.3.1",
-    "es5-shim": "~2.0.8"
+    "json3": "~3.2.4","es5-shim": "~2.0.8"
   },
   "devDependencies": {
     "angular-mocks": "~1.0.7",
