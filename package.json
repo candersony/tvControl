@@ -1,5 +1,7 @@
 {
   "name": "tvcontrol",
+  "description": "An IR control server to run on a raspberry pi and provide an easy to use web interface for controlling devices",
+  "readme": "README.md",
   "version": "0.0.0",
   "dependencies": {
     "express": "~3.0.0",
