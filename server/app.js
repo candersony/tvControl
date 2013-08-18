@@ -1,5 +1,5 @@
 var express = require("express"),
-    exec = require('child_process').exec;
+    irService = require('./irService');
 
 var app = express();
 app.use(express.logger());
@@ -7,11 +7,11 @@ app.use(express.logger());
 // Configuration
 
 app.configure(function(){
-    app.set('views', __dirname + '/app');
+    app.set('views', 'app');
   //app.set('view engine', 'jade');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.static(__dirname + '/app'));
+  app.use(express.static('app'));
   app.use(app.router);
   app.engine('html', require('ejs').renderFile);
 });
@@ -20,15 +20,25 @@ app.get('/', function(request, response) {
   response.render('index.html')
 });
 
-app.get('/ir/:device/:command', function(request, response){
-    var irCommand = {
-            device: request.params.device,
-        command: request.params.command
-    };
+app.get('/ir/devices', function(request, response){
+    irService.getDevices().then(function(devices){
+        response.send(200, devices);
+    });
+});
 
-    exec('irsend SEND_ONCE ' + irCommand.device + ' ' + irCommand.command.toUpperCase());
+app.post('/ir/:device', function(request, response){
+    irService.getDevice(request.params.device).then(function(device){
+        response.send(200, device);
+    });
+});
 
-    response.send(200, irCommand);
+app.post('/ir/:device/:command', function(request, response){
+    var device = request.params.device,
+        command = request.params.command;
+
+    irService.sendCommand(device, command).then(function(result){
+        response.send(200, result);
+    });
 });
 
 var port = process.env.PORT || 5000;
