@@ -1,9 +1,14 @@
 <div class="hero-unit">
-  <h1>'Allo, 'Allo!</h1>
-  <p>You now have</p>
+  <h1>Ir Commands</h1>
   <ul>
-      <li ng-repeat="thing in awesomeThings">{{thing}}</li>
+      <li ng-repeat="device in devices">
+          {{device.name}}
+          <ul>
+              <li ng-repeat="command in device.commands">
+                  <button ng-click="sendCommand(device.name, command.code)">{{command.name}}</button>
+              </li>
+          </ul>
+      </li>
   </ul>
-  <p>installed.</p>
-  <h3>Enjoy coding! - Yeoman</h3>
+  <div ng-repeat="message in messages">{{message}}</div>
 </div>
