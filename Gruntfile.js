@@ -394,7 +394,7 @@ module.exports = function (grunt) {
       'uglify',
       'rev',
       'usemin'
-      ]);
+    ]);
 
     var packageJson = require('./package.json');
 

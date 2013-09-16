@@ -1,4 +1,4 @@
-var express = require("express"),
+var express = require('express'),
     irService = require('./irService');
 
 var app = express();
@@ -19,31 +19,31 @@ app.configure(function(){
 });
 
 app.get('/', function(request, response) {
-  response.render('index.html')
+  response.render('index.html');
 });
 
 app.get('/ir/devices', function(request, response){
-    irService.getDevices().then(function(devices){
-        response.send(200, devices);
+  irService.getDevices().then(function(devices){
+      response.send(200, devices);
     });
 });
 
 app.post('/ir/:device', function(request, response){
-    irService.getDevice(request.params.device).then(function(device){
-        response.send(200, device);
+  irService.getDevice(request.params.device).then(function(device){
+      response.send(200, device);
     });
 });
 
 app.post('/ir/:device/:command', function(request, response){
-    var device = request.params.device,
-        command = request.params.command;
+  var device = request.params.device,
+      command = request.params.command;
 
-    irService.sendCommand(device, command).then(function(result){
-        response.send(200, result);
+  irService.sendCommand(device, command).then(function(result){
+      response.send(200, result);
     });
 });
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
-  console.log("Listening on " + port);
+  console.log('Listening on ' + port);
 });

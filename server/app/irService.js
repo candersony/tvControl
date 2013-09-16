@@ -1,4 +1,4 @@
-var q = require('q')
+var q = require('q'),
     exec = require('child_process').exec,
     util = require('util');
 
@@ -16,20 +16,22 @@ function getDevices(){
     exec('irsend LIST "" ""', function(error, stdout, stderr){
       var deviceNames = stderr.toString().replace('irsend:', '').split(' ');
 
+      function addToDevices(error, stdout, stderr){
+        var commands = stderr.toString().match(/key_[^\s\n]+/ig);
+        devices[deviceName] = {
+          name: deviceName,
+          commands: commands
+        };
+      }
+
       for(var i in deviceNames) {
+
         var deviceName = deviceNames[i],
             cmd = util.format('irsend LIST "%s" ""', deviceName);
 
-        exec(cmd, function(error, stdout, stderr) {
-          var commands = stderr.toString().match(/key_[^\s\n]+/ig);
-          devices[deviceName] = {
-            name: deviceName,
-            commands: commands
-          };
-
-          deferred.resolve(devices);
-        });
+        exec(cmd, addToDevices);
       }
+      deferred.resolve(devices);
     });
   }
 
@@ -37,39 +39,39 @@ function getDevices(){
 }
 
 function getDevice(name){
-    var deferred = q.defer();
+  var deferred = q.defer();
 
-    if(!!devices && !!devices[name]){
-        deferred.resolve(devices[name]);
-    }
-    else{
-        getDevices().then(function(newDevices){
-           deferred.resolve(newDevices[name]);
-        });
-    }
+  if(!!devices && !!devices[name]){
+    deferred.resolve(devices[name]);
+  }
+  else{
+    getDevices().then(function(newDevices){
+      deferred.resolve(newDevices[name]);
+    });
+  }
 
-    return deferred.promise;
+  return deferred.promise;
 }
 
 function sendCommand(deviceName, command) {
-    var deferred = q.defer();
+  var deferred = q.defer();
 
-    var message = 'Command Sent to ' + deviceName + ' : ' + command;
-    console.log(message);
+  var message = 'Command Sent to ' + deviceName + ' : ' + command;
+  console.log(message);
 
-    exec('irsend SEND_ONCE ' + deviceName + ' ' + command.toUpperCase(), function(error, stdout, stderr){
-        deferred.resolve({
-            error: error,
-            stdout: stdout.toString(),
-            stderr: stderr.toString()
-        });
-    });
+  exec('irsend SEND_ONCE ' + deviceName + ' ' + command.toUpperCase(), function(error, stdout, stderr){
+    deferred.resolve({
+        error: error,
+        stdout: stdout.toString(),
+        stderr: stderr.toString()
+      });
+  });
 
-    return deferred.promise;
+  return deferred.promise;
 }
 
 module.exports = {
-    getDevices: getDevices,
-    getDevice: getDevice,
-    sendCommand: sendCommand
+  getDevices: getDevices,
+  getDevice: getDevice,
+  sendCommand: sendCommand
 };
