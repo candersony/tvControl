@@ -1,19 +1,14 @@
 'use strict.';
 
-function mainController($scope, $http) {
-  $http.get('/ir/devices').then(function (response) {
-        $scope.devices = response.data;
-      });
+function mainController($scope, irService) {
+  irService.getDevices().then(function(devices){
+    $scope.devices = devices;
+  });
 
   $scope.messages = [];
 
   $scope.sendCommand = function (deviceName, command) {
-    var uriEncoded = {
-        deviceName: encodeURIComponent(deviceName),
-        command: encodeURIComponent(command)
-      };
-
-    $http.post('/ir/' + uriEncoded.deviceName + '/' + uriEncoded.command).then(function (response) {
+    irService.sendCommand(deviceName, command).then(function(response){
         $scope.messages.push(response.data.stdout);
       });
   };
