@@ -4,11 +4,16 @@
   "appPath": "client/app",
   "testPath": "client/test/spec",
   "dependencies": {
-    "angular": "~1.0.7",
-    "json3": "~3.2.4","es5-shim": "~2.0.8"
+    "angular": "1.2.0-rc.2",
+    "json3": "~3.2.4",
+    "es5-shim": "~2.0.8"
   },
   "devDependencies": {
-    "angular-mocks": "~1.0.7",
-    "angular-scenario": "~1.0.7"
+    "angular-mocks": "1.2.0-rc.2",
+    "angular-scenario": "1.2.0-rc.2"
+  },
+  "resolutions": {
+    "angular": "1.2.0-rc.2",
+    "angular-mocks": "1.2.0-rc.2"
   }
 }
