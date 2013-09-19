@@ -25,14 +25,14 @@ app.get('/', function(request, response) {
 
 app.get('/ir/devices', function(request, response){
   irService.getDevices().then(function(devices){
-      response.send(200, devices);
-    });
+    response.send(200, devices);
+  });
 });
 
-app.post('/ir/:device', function(request, response){
-  irService.getDevice(request.params.device).then(function(device){
-      response.send(200, device);
-    });
+app.get('/ir/commands', function(request, response){
+  irService.getCommands().then(function(devices){
+    response.send(200, devices);
+  });
 });
 
 app.post('/ir/:device/:command', function(request, response){
