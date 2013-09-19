@@ -1,14 +1,187 @@
-<div class="hero-unit">
-  <h1>Ir Commands</h1>
-  <ul>
-      <li ng-repeat="device in devices">
-          {{device.name}}
-          <ul>
-              <li ng-repeat="command in device.commands">
-                  <button ng-click="sendCommand(device.name, command.code)">{{command.name}}</button>
-              </li>
-          </ul>
-      </li>
-  </ul>
-  <div ng-repeat="message in messages">{{message}}</div>
+<div>
+  <div class="navbar">
+    <div class="navbar-inner">
+      <span class="brand">Devices</span>
+      <ul class="nav">
+        <li ng-repeat="device in viewModel.devices" ng-class="{ active: viewModel.selectedDevice == device }">
+          <a href="javascript:void(0)" ng-click="viewModel.selectedDevice = device">{{device}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="remote-control" class="hero-unit">
+
+    <div class="row">
+      <div class="span4">
+        <div class="row">
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('POWER')">
+              <span class="icon-off"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('SMART')">
+              <span class="icon-home"></span>
+            </div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('UP')">
+              <span class="icon-circle-arrow-up"></span>
+            </div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('MENU')">
+              <span class="icon-list"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('LEFT')">
+              <span class="icon-circle-arrow-left"></span>
+            </div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('ENTER')">
+              <span class="icon-share"></span>
+            </div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('RIGHT')">
+              <span class="icon-circle-arrow-right"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('BACK')">
+              <span class="icon-arrow-left"></span>
+            </div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('DOWN')">
+              <span class="icon-circle-arrow-down"></span>
+            </div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('EXIT')">
+              <span class="icon-remove"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('PLAY')">
+              <span class="icon-play"></span>
+            </div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('PAUSE')">
+              <span class="icon-pause"></span>
+            </div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('STOP')">
+              <span class="icon-stop"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('REWIND')">
+              <span class="icon-fast-backward"></span>
+            </div>
+          </div>
+          <div class="offset1 span1">
+            <div class="btn" ng-click="sendCommand('FAST_FWD')">
+              <span class="icon-fast-forward"></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="span4">
+
+        <div class="row">
+          <div class="span3 colors">
+            <div class="btn btn-danger" ng-click="sendCommand('RED')"></div>
+            <div class="btn btn-warning" ng-click="sendCommand('YELLOW')"></div>
+            <div class="btn btn-success" ng-click="sendCommand('GREEN')"></div>
+            <div class="btn btn-primary" ng-click="sendCommand('BLUE')"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand(1)">1</div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand(2)">2</div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand(3)">3</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand(4)">4</div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand(5)">5</div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand(6)">6</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand(7)">7</div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand(8)">8</div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand(9)">9</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('VOLUME_UP')"><span class="icon-volume-up"></span></div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand(0)">0</div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('CHANNEL_UP')"><span class="icon-chevron-up"></span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('VOLUME_DOWN')"><span class="icon-volume-down"></span></div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('MUTE')"><span class="icon-volume-off"></span></div>
+          </div>
+          <div class="span1">
+            <div class="btn" ng-click="sendCommand('CHANNEL_DOWN')"><span class="icon-chevron-down"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert" ng-class="{ 'alert-success': message.type == 'stdout', 'alert-error': message.type == 'stderr' }" ng-repeat="message in viewModel.messages track by $id(message + $index)">{{message.text}}</div>
 </div>

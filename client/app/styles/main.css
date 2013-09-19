@@ -1,22 +1,26 @@
-body {
-    background: #fafafa;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #333;
+#remote-control .row {
+    margin-bottom: 10px;
 }
 
-.hero-unit {
-    margin: 50px auto 0 auto;
-    width: 300px;
-    font-size: 18px;
-    font-weight: 200;
+#remote-control [class*="span"] {
+    margin-left: 10px;
+}
+
+#remote-control .offset1 {
+    margin-left: 80px;
+}
+
+#remote-control .btn {
+    width: 30px;
+    height: 30px;
     line-height: 30px;
-    background-color: #eee;
-    border-radius: 6px;
-    padding: 60px;
 }
-
-.hero-unit h1 {
-    font-size: 60px;
-    line-height: 1;
-    letter-spacing: -1px;
+#remote-control .colors .btn {
+    float: left;
+    height: 20px;
+    width: 15px;
+    margin-right: 10px;
+}
+#remote-control .colors .btn:last-of-type {
+    margin-right: 0;
 }

@@ -1,16 +1,23 @@
 'use strict.';
 
 function mainController($scope, irService) {
+
+  $scope.viewModel = {
+    devices: null,
+    selectedDevice: null,
+    messages: []
+  };
+
   irService.getDevices().then(function(devices){
-    $scope.devices = devices;
+    $scope.viewModel.devices = devices;
+    $scope.viewModel.selectedDevice = devices[0];
   });
 
-  $scope.messages = [];
-
-  $scope.sendCommand = function (deviceName, command) {
-    irService.sendCommand(deviceName, command).then(function(response){
-        $scope.messages.push(response.data.stdout);
-      });
+  $scope.sendCommand = function (command) {
+    irService.sendCommand($scope.selectedDevice, command).then(function(response){
+      !!response.stdout && $scope.viewModel.messages.push({ text: response.stdout, type: 'stdout' });
+      !!response.stderr && $scope.viewModel.messages.push({ text: response.stderr, type: 'stderr' });
+    });
   };
 }
 
