@@ -1,77 +1,72 @@
 var q = require('q'),
-    exec = require('child_process').exec,
-    util = require('util');
+  irSend;
 
-var devices;
+var commands = {
+  UP: 'KEY_UP',
+  DOWN: 'KEY_DOWN',
+  LEFT: 'KEY_LEFT',
+  RIGHT: 'KEY_RIGHT',
+  ENTER: 'KEY_ENTER',
+  SMART: 'KEY_SMART',
+  BACK: 'KEY_BACK',
+  VOLUME_UP: 'KEY_VOLUP',
+  VOLUME_DOWN: 'KEY_VOLDOWN',
+  CHANNEL_DOWN: 'KEY_CHDOWN',
+  CHANNEL_UP: 'KEY_CHUP',
+  STOP: 'KEY_STOP',
+  PLAY: 'KEY_PLAY',
+  PAUSE: 'KEY_PAUSE',
+  PLAY_PAUSE: 'KEY_PLAY/PAUSE',
+  FAST_FWD: 'KEY_FORWARD',
+  REWIND: 'KEY_REWIND',
+  RED: 'KEY_RED',
+  GREEN: 'KEY_GREEN',
+  YELLOW: 'KEY_YELLOW',
+  BLUE: 'KEY_BLUE',
+  EXIT: 'KEY_EXIT',
+  MENU: 'KEY_MENU',
+  MUTE: 'KEY_MUTE',
+  '1': 'KEY_1',
+  '2': 'KEY_2',
+  '3': 'KEY_3',
+  '4': 'KEY_4',
+  '5': 'KEY_5',
+  '6': 'KEY_6',
+  '7': 'KEY_7',
+  '8': 'KEY_8',
+  '9': 'KEY_9',
+  '0': 'KEY_0'
+};
 
 function getDevices(){
-  var deferred = q.defer();
-
-  if(!!devices){
-    deferred.resolve(devices);
-  }
-  else{
-    devices = {};
-
-    exec('irsend LIST "" ""', function(error, stdout, stderr){
-      var deviceNames = stderr.toString().replace('irsend:', '').split(' ');
-
-      function addToDevices(error, stdout, stderr){
-        var commands = stderr.toString().match(/key_[^\s\n]+/ig);
-        devices[deviceName] = {
-          name: deviceName,
-          commands: commands
-        };
-      }
-
-      for(var i in deviceNames) {
-
-        var deviceName = deviceNames[i],
-            cmd = util.format('irsend LIST "%s" ""', deviceName);
-
-        exec(cmd, addToDevices);
-      }
-      deferred.resolve(devices);
-    });
-  }
-
-  return deferred.promise;
+  return irSend.listDevices();
 }
 
-function getDevice(name){
+function getCommands(){
   var deferred = q.defer();
-
-  if(!!devices && !!devices[name]){
-    deferred.resolve(devices[name]);
-  }
-  else{
-    getDevices().then(function(newDevices){
-      deferred.resolve(newDevices[name]);
-    });
-  }
-
+  deferred.resolve(Object.keys(commands));
   return deferred.promise;
 }
 
 function sendCommand(deviceName, command) {
-  var deferred = q.defer();
 
-  var message = 'Command Sent to ' + deviceName + ' : ' + command;
-  console.log(message);
+  if(!commands.hasOwnProperty(command)){
+    return q.reject(new Error('The specified command is not supported. (' + command + ')'));
+  }
 
-  exec('irsend SEND_ONCE ' + deviceName + ' ' + command.toUpperCase(), function(error, stdout, stderr){
-    deferred.resolve({
-        error: error,
-        stdout: stdout.toString(),
-        stderr: stderr.toString()
-      });
-  });
-
-  return deferred.promise;
+  return irSend.sendCommand(deviceName, commands[command]);
 }
 
-module.exports = {
-  getDevices: getDevices,
-  getDevice: getDevice,
-  sendCommand: sendCommand
+module.exports = function(irSendModule) {
+  if(!irSendModule) {
+    throw new Error('you must specify an ir send module');
+  }
+
+  irSend = irSendModule;
+
+  return {
+    getDevices: getDevices,
+    getCommands: getCommands,
+    sendCommand: sendCommand
+  };
 };
