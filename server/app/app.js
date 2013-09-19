@@ -1,5 +1,6 @@
 var express = require('express'),
-    irService = require('./irService');
+  irSend = require('./irSend'),
+  irService = require('./irService')(irSend);
 
 var app = express();
 app.use(express.logger());
