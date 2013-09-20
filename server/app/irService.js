@@ -2,6 +2,7 @@ var q = require('q'),
   irSend;
 
 var commands = {
+  POWER: 'KEY_POWER',
   UP: 'KEY_UP',
   DOWN: 'KEY_DOWN',
   LEFT: 'KEY_LEFT',

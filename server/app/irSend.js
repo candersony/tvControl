@@ -6,7 +6,7 @@ function listDevices(){
   var deferred = q.defer();
 
   exec('irsend LIST "" ""', function (error, stdout, stderr){
-    var deviceNames = stderr.toString().replace('irsend:', '').split(' ');
+    var deviceNames = stderr.toString().replace(/irsend:/, '').replace(/\n/, '').trim().split(' ');
     deferred.resolve(deviceNames);
   });
 
@@ -27,9 +27,10 @@ function listDeviceCommands(deviceName){
 }
 
 function sendCommand(deviceName, command) {
-  var deferred = q.defer();
+  var deferred = q.defer(),
+    cmd = util.format('irsend SEND_ONCE "%s" "%s"', deviceName, command);
 
-  exec('irsend SEND_ONCE ' + deviceName + ' ' + command.toUpperCase(), function(error, stdout, stderr){
+  exec(cmd, function(error, stdout, stderr){
     deferred.resolve({
       stdout: stdout.toString(),
       stderr: stderr.toString()
