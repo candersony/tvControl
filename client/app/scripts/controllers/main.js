@@ -14,12 +14,14 @@ function mainController($scope, irService) {
   });
 
   $scope.sendCommand = function (command) {
-    irService.sendCommand($scope.selectedDevice, command).then(function(response){
+    irService.sendCommand($scope.viewModel.selectedDevice, command).then(function(response){
       !!response.stdout && $scope.viewModel.messages.push({ text: response.stdout, type: 'stdout' });
       !!response.stderr && $scope.viewModel.messages.push({ text: response.stderr, type: 'stderr' });
+    }, function(reason){
+      $scope.viewModel.messages.push({ text: reason, type: 'stderr' });
     });
   };
 }
 
 angular.module('tvControl')
-    .controller('MainCtrl', mainController);
+    .controller('MainCtrl', ['$scope', 'irService', mainController]);

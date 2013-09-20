@@ -31,4 +31,4 @@ function irService($http){
 }
 
 angular.module('tvControl')
-  .service('irService', irService);
+  .service('irService', ['$http', irService]);
