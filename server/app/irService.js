@@ -3,6 +3,7 @@ var q = require('q'),
 
 var commands = {
   POWER: 'KEY_POWER',
+  SOURCE: 'KEY_SOURCE',
   UP: 'KEY_UP',
   DOWN: 'KEY_DOWN',
   LEFT: 'KEY_LEFT',
