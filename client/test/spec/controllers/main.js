@@ -2,27 +2,52 @@
 
 describe('Controller: MainCtrl', function () {
 
-
-
     // load the controller's module
-  beforeEach(module('tvControl', 'tvControlMock'));
+  beforeEach(module('tvControl'));
 
   var MainCtrl,
     scope,
     mockIrService;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, _mockIrService_) {
+  beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    mockIrService = _mockIrService_;
+
+    mockIrService = {
+      getDevices: angular.noop,
+      sendCommand: angular.noop,
+      mockDevices: ['samsung', 'lg', 'toshiba', 'phillips', 'panasonic']
+    };
+    spyOn(mockIrService, 'getDevices').andReturn({
+      then: function(callback){
+        callback(mockIrService.mockDevices);
+      }
+    });
+    spyOn(mockIrService, 'sendCommand').andReturn({
+      then: function(callback) {
+        callback({
+          stdout: 'this is test stdout',
+          stderr: 'this is test stderr'
+        });
+      }
+    });
+
     MainCtrl = $controller('MainCtrl', {
       $scope: scope,
-      irService: _mockIrService_
+      irService: mockIrService
     });
+    scope.$digest();
   }));
 
   it('should attach a list of devices to the scope', function () {
-    scope.$digest();
-    expect(scope.devices.length).toBe(mockIrService.mockDevices.length);
+    expect(scope.viewModel.devices.length).toBe(mockIrService.mockDevices.length);
+  });
+
+  it('should set the first device in the list of devices as the selected device', function(){
+    expect(scope.viewModel.selectedDevice).toBe(mockIrService.mockDevices[0]);
+  });
+
+  it('should send a command to the selected device', function(){
+    expect(scope.viewModel.selectedDevice).toBe(mockIrService.mockDevices[0]);
   });
 });
