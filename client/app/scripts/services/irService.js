@@ -19,7 +19,7 @@ function irService($http){
       };
 
     return $http.post('/ir/' + uriEncoded.deviceName + '/' + uriEncoded.command).then(function (response) {
-       return response.data;
+      return response.data;
     });
   }
 

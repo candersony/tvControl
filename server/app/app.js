@@ -42,7 +42,7 @@ app.post('/ir/:device/:command', function(request, response){
   irService.sendCommand(device, command).then(function(result){
       response.send(200, result);
     }, function(reason){
-      response.send(400, reason.message);
+    response.send(400, reason.message);
   });
 });
 
