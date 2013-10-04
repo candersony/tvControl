@@ -45,5 +45,5 @@ function irService($http){
   };
 }
 
-angular.module('tvControl')
+angular.module('tvControlApp')
   .service('irService', ['$http', irService]);

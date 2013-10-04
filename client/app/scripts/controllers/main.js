@@ -27,5 +27,5 @@ function mainController($scope, irService) {
   };
 }
 
-angular.module('tvControl')
+angular.module('tvControlApp')
     .controller('MainCtrl', ['$scope', 'irService', mainController]);

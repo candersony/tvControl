@@ -4,7 +4,7 @@ describe('Service: irService', function () {
 
 
   // load the controller's module
-  beforeEach(module('tvControl'));
+  beforeEach(module('tvControlApp'));
 
   var irService, $httpBackend;
 

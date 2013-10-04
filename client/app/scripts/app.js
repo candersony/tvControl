@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tvControl', ['ngRoute'])
+angular.module('tvControlApp', ['ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
