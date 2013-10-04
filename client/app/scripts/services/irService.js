@@ -18,15 +18,30 @@ function irService($http){
         command: encodeURIComponent(command)
       };
 
+    callSendCommandEventHandlers(deviceName, command);
+
     return $http.post('/ir/' + uriEncoded.deviceName + '/' + uriEncoded.command).then(function (response) {
       return response.data;
     });
   }
 
+  var sendCommandEventHandlers = [];
+
+  function callSendCommandEventHandlers(device, command){
+    angular.forEach(sendCommandEventHandlers, function(sendCommandEventHandler){
+      sendCommandEventHandler(device, command);
+    });
+  }
+
+  function onSendCommand(eventHandler){
+    sendCommandEventHandlers .push(eventHandler);
+  }
+
   return {
     getDevices: getDevices,
     getCommands: getCommands,
-    sendCommand: sendCommand
+    sendCommand: sendCommand,
+    onSendCommand: onSendCommand
   };
 }
 
