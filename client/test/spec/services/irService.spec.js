@@ -12,8 +12,6 @@ describe('Service: irService', function () {
     irService = $injector.get('irService');
 
     $httpBackend = $injector.get('$httpBackend');
-
-
   }));
 
   afterEach(function() {
@@ -30,6 +28,49 @@ describe('Service: irService', function () {
     });
     it('onSendCommand should be a function', function(){
       expect(typeof irService.onSendCommand).toBe('function');
+    });
+    it('saveMacro should be a function', function(){
+      expect(typeof irService.saveMacro).toBe('function');
+    });
+    it('getMacros should be a function', function(){
+      expect(typeof irService.getMacros).toBe('function');
+    });
+  });
+
+  describe('the saveMacro function', function(){
+    it('should save a macro', function(){
+
+      var macro = [];
+
+      $httpBackend.when('POST', '/ir/macro').respond('saved');
+
+      var response;
+
+      irService.saveMacro(macro).then(function(r){
+        response = r;
+      });
+
+      $httpBackend.flush();
+
+      expect(response).toBe('saved');
+    });
+  });
+
+  describe('the getMacros function', function(){
+    it('should return a list macros', function(){
+
+      var testMacros = [{ device: 'samsung', commands: []}];
+      $httpBackend.when('GET', '/ir/macro').respond(testMacros);
+
+      var macros;
+
+      irService.getMacros().then(function(newMacros){
+        macros = newMacros;
+      });
+
+      $httpBackend.flush();
+
+      expect(macros).toBe(testMacros);
     });
   });
 

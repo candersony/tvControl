@@ -37,11 +37,24 @@ function irService($http){
     sendCommandEventHandlers .push(eventHandler);
   }
 
+  function saveMacro(macro){
+    return $http.post('/ir/macro', macro).then(function (response) {
+      return response.data;
+    });
+  }
+
+  function getMacros(){
+    return $http.get('/ir/macro').then(function (response) {
+      return response.data;
+    });
+  }
   return {
     getDevices: getDevices,
     getCommands: getCommands,
     sendCommand: sendCommand,
-    onSendCommand: onSendCommand
+    onSendCommand: onSendCommand,
+    saveMacro: saveMacro,
+    getMacros: getMacros
   };
 }
 
