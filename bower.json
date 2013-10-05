@@ -12,5 +12,25 @@
   "devDependencies": {
     "angular-mocks": "1.2.0-rc.2",
     "angular-scenario": "1.2.0-rc.2"
-  }
+  },
+  "homepage": "https://github.com/candersony/tvControl",
+  "authors": [
+    "Craig Anderson <craig@cander.me>"
+  ],
+  "description": "TV Control provides the ability to control TVs remotely using a raspberry pi.",
+  "main": "client/app/index.html",
+  "keywords": [
+    "raspberrypi",
+    "angularjs",
+    "nodejs"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/app/bower_components",
+    "test",
+    "tests"
+  ]
 }

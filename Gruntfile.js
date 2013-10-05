@@ -30,7 +30,7 @@ module.exports = function (grunt) {
   };
 
   try {
-    yeomanConfig.app = require('./bower.json').appPath || yeomanConfig.app;
+    yeomanConfig.app = require('./bower.json').appPath || yeomanConfig.client.app;
   } catch (e) {}
 
   grunt.initConfig({
@@ -361,7 +361,7 @@ module.exports = function (grunt) {
       return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
     }
 
-    grunt.task.run([
+    return grunt.task.run([
       'clean:server',
       'concurrent:server',
       'autoprefixer',
