@@ -44,7 +44,7 @@ describe('Service: irService', function () {
 
       $httpBackend.when('POST', '/ir/macro').respond('saved');
 
-      var response;
+      var response = null;
 
       irService.saveMacro(macro).then(function(r){
         response = r;
@@ -62,7 +62,7 @@ describe('Service: irService', function () {
       var testMacros = [{ device: 'samsung', commands: []}];
       $httpBackend.when('GET', '/ir/macro').respond(testMacros);
 
-      var macros;
+      var macros = null;
 
       irService.getMacros().then(function(newMacros){
         macros = newMacros;
@@ -79,7 +79,7 @@ describe('Service: irService', function () {
 
       $httpBackend.when('POST', '/ir/samsung/enter').respond('command executed');
 
-      var response;
+      var response = null;
 
       irService.sendCommand('samsung', 'enter').then(function(r){
         response = r;
@@ -112,7 +112,7 @@ describe('Service: irService', function () {
       var testDevices = ['samsung'];
       $httpBackend.when('GET', '/ir/devices').respond(testDevices);
 
-      var devices;
+      var devices = null;
 
       irService.getDevices().then(function(newDevices){
         devices = newDevices;
