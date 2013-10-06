@@ -39,6 +39,11 @@ describe('Controller: MainCtrl', function () {
     scope.$digest();
   }));
 
+  describeInterface('main controller scope', {
+    viewModel: {},
+    sendCommand: function(){}
+  }, function(){ return scope; });
+
   it('should attach a list of devices to the scope', function () {
     expect(scope.viewModel.devices.length).toBe(mockIrService.mockDevices.length);
   });

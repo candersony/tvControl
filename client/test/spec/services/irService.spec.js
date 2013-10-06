@@ -19,23 +19,13 @@ describe('Service: irService', function () {
     $httpBackend.verifyNoOutstandingRequest();
   });
 
-  describe('interface', function(){
-    it('getDevices should be a function', function(){
-      expect(typeof irService.getDevices).toBe('function');
-    });
-    it('sendCommand should be a function', function(){
-      expect(typeof irService.sendCommand).toBe('function');
-    });
-    it('onSendCommand should be a function', function(){
-      expect(typeof irService.onSendCommand).toBe('function');
-    });
-    it('saveMacro should be a function', function(){
-      expect(typeof irService.saveMacro).toBe('function');
-    });
-    it('getMacros should be a function', function(){
-      expect(typeof irService.getMacros).toBe('function');
-    });
-  });
+  describeInterface('irService', {
+    getDevices: function(){},
+    sendCommand: function(){},
+    onSendCommand: function(){},
+    saveMacro: function(){},
+    getMacros: function(){}
+  }, function(){ return irService; });
 
   describe('the saveMacro function', function(){
     it('should save a macro', function(){

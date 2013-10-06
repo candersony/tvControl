@@ -39,44 +39,11 @@ describe('Controller: MacroCtrl', function () {
     $httpBackend.verifyNoOutstandingRequest();
   });
 
-  describe('scope structure', function(){
-    var scopeStructure = {
-      startRecording: function(){},
-      stopRecording: function(){},
-      currentMacros: []
-    },
-    allProperties = [];
-
-    angular.forEach(scopeStructure, function(property, propertyName){
-      if(!scopeStructure.hasOwnProperty(propertyName)) {
-        return;
-      }
-      allProperties.push(propertyName);
-
-      var isFunction = angular.isFunction(property);
-      it('should have the ' + propertyName + ' ' + (isFunction ? 'function' : 'property'), function(){
-        expect(scope[propertyName]).toBeDefined();
-
-        if(isFunction){
-          var scopePropIsFn = angular.isFunction(scope[propertyName]),
-            trueStatement = 'scope property is function';
-          expect(trueStatement).toBe(scopePropIsFn ? trueStatement : false);
-        }
-      });
-    });
-
-    it('should not have any untested items', function(){
-      angular.forEach(scope, function(property, propertyName){
-        if(!scope.hasOwnProperty(propertyName) || propertyName[0] === '$' || propertyName === 'this') {
-          return;
-        }
-
-        if(allProperties.indexOf(propertyName) < 0){
-          expect('should not have the untested property "$scope.' + propertyName + '"').toBe(true);
-        }
-      });
-    });
-  });
+  describeInterface('macro controller scope', {
+    startRecording: function(){},
+    stopRecording: function(){},
+    currentMacros: []
+  }, function(){ return scope; });
 
   describe('Macro controller functionality', function(){
     it('should load the currently available macros on start up', function(){
