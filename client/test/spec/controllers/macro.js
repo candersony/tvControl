@@ -42,7 +42,8 @@ describe('Controller: MacroCtrl', function () {
   describeInterface('macro controller scope', {
     startRecording: function(){},
     stopRecording: function(){},
-    currentMacros: []
+    currentMacros: [],
+    isRecording: false
   }, function(){ return scope; });
 
   describe('Macro controller functionality', function(){
@@ -78,6 +79,19 @@ describe('Controller: MacroCtrl', function () {
       $httpBackend.flush();
 
       expect(function(){ irService.sendCommand('samsung2', 'enter'); }).toThrow();
+    });
+
+    it('should correctly report when recording is in progress', function () {
+      expect(scope.isRecording).toBe(false);
+
+      scope.startRecording();
+
+      expect(scope.isRecording).toBe(true);
+
+      scope.stopRecording();
+      $httpBackend.flush();
+
+      expect(scope.isRecording).toBe(false);
     });
   });
 });
