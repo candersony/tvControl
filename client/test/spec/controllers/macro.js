@@ -69,5 +69,15 @@ describe('Controller: MacroCtrl', function () {
 
       expect(scope.currentMacros).toEqual(expectedCurrentMacros);
     });
+
+    it('should throw an exception if the device is changed while recording a macro', function(){
+
+      scope.startRecording();
+
+      irService.sendCommand('samsung', 'enter');
+      $httpBackend.flush();
+
+      expect(function(){ irService.sendCommand('samsung2', 'enter'); }).toThrow();
+    });
   });
 });

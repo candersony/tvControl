@@ -23,14 +23,7 @@ describe('Controller: MainCtrl', function () {
         callback(mockIrService.mockDevices);
       }
     });
-    spyOn(mockIrService, 'sendCommand').andReturn({
-      then: function(callback) {
-        callback({
-          stdout: 'this is test stdout',
-          stderr: 'this is test stderr'
-        });
-      }
-    });
+
 
     MainCtrl = $controller('MainCtrl', {
       $scope: scope,
@@ -53,6 +46,52 @@ describe('Controller: MainCtrl', function () {
   });
 
   it('should send a command to the selected device', function(){
-    expect(scope.viewModel.selectedDevice).toBe(mockIrService.mockDevices[0]);
+    spyOn(mockIrService, 'sendCommand').andReturn({ then: function() { } });
+
+    scope.viewModel.selectedDevice = 'samsung';
+    scope.sendCommand('enter');
+
+    expect(mockIrService.sendCommand.calls.length).toBe(1);
+    expect(mockIrService.sendCommand).toHaveBeenCalledWith('samsung', 'enter');
+  });
+
+  it('should send a command and add a stdout message to the view model', function(){
+    spyOn(mockIrService, 'sendCommand').andReturn({
+      then: function(successCallback) {
+        successCallback({
+          stdout: 'this is test stdout'
+        });
+      }
+    });
+
+    scope.sendCommand('enter');
+
+    expect(scope.viewModel.messages[0]).toEqual({ text: 'this is test stdout', type: 'stdout'});
+  });
+
+  it('should send a command and add a stderr message to the view model', function(){
+    spyOn(mockIrService, 'sendCommand').andReturn({
+      then: function(successCallback) {
+        successCallback({
+          stderr: 'this is test stderr'
+        });
+      }
+    });
+
+    scope.sendCommand('enter');
+
+    expect(scope.viewModel.messages[0]).toEqual({ text: 'this is test stderr', type: 'stderr'});
+  });
+
+  it('should send a command and add a promise rejection error message to the view model', function(){
+    spyOn(mockIrService, 'sendCommand').andReturn({
+      then: function(successCallback, errorCallback) {
+        errorCallback('this is test error reason');
+      }
+    });
+
+    scope.sendCommand('enter');
+
+    expect(scope.viewModel.messages[0]).toEqual({ text: 'this is test error reason', type: 'stderr'});
   });
 });
