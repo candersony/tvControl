@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tvControlApp')
-  .controller('MacroCtrl', ['$scope', 'irService', function ($scope, irService) {
+  .controller('MacroCtrl', ['$scope', 'irService', 'timer', function ($scope, irService, timer) {
     var commandRecorder = (function(){
       var recordedCommands = [],
         currentDevice = null;
@@ -56,7 +56,16 @@ angular.module('tvControlApp')
 
     function recordCommand(device, command){
       if($scope.isRecording){
+        timer.stop();
+        var timeBetweenLastCommand = timer.getRecordedDuration();
+
+        if(timeBetweenLastCommand > 0){
+          commandRecorder.addCommand(device, 'sleep ' + timeBetweenLastCommand);
+        }
+
         commandRecorder.addCommand(device, command);
+
+        timer.start();
       }
     }
 

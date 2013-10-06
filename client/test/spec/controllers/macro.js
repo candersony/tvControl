@@ -4,6 +4,19 @@ describe('Controller: MacroCtrl', function () {
 
   // load the controller's module
   beforeEach(module('tvControlApp'));
+  beforeEach(module(function($provide) {
+    $provide.service('date', function(){
+      var currentTime = 200;
+
+      return {
+        getCurrentTime: function(){
+          var actualCurrentTime = currentTime;
+          currentTime = currentTime + 200;
+          return actualCurrentTime;
+        }
+      };
+    });
+  }));
 
   var MacroCtrl,
     scope,
@@ -52,12 +65,13 @@ describe('Controller: MacroCtrl', function () {
     });
 
     it('should record a macro and update the available macros', function(){
-      var macro = { device: 'samsung2', commands: ['up', 'down', 'left', 'right']};
+      var currentDevice = 'samsung2',
+          commands =['up', 'down', 'left', 'right'];
 
       scope.startRecording();
 
-      angular.forEach(macro.commands, function(command){
-        irService.sendCommand(macro.device, command);
+      angular.forEach(commands, function(command){
+        irService.sendCommand(currentDevice, command);
         $httpBackend.flush();
       });
 
@@ -66,7 +80,7 @@ describe('Controller: MacroCtrl', function () {
       $httpBackend.flush();
 
       var expectedCurrentMacros = angular.copy(savedMacros);
-      expectedCurrentMacros.push(macro);
+      expectedCurrentMacros.push({ device: currentDevice, commands: ['up', 'sleep 200', 'down', 'sleep 200', 'left', 'sleep 200', 'right']});
 
       expect(scope.currentMacros).toEqual(expectedCurrentMacros);
     });
