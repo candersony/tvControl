@@ -9,15 +9,15 @@
       </ul>
     </div>
   </div>
-  <div class="navbar" ng-controller>
+  <div class="navbar" ng-controller="MacroCtrl">
     <div class="navbar-inner">
       <span class="brand">Macros</span>
       <ul class="nav">
-        <li>
-          <a ng-click="startRecording()">Start</a>
+        <li ng-class="{ active: isRecording }">
+          <a href="javascript:void(0)" ng-click="startRecording()">Start</a>
         </li>
-        <li>
-          <a ng-click="stopRecording()">Stop</a>
+        <li ng-class="{ active: !isRecording }">
+          <a href="javascript:void(0)" ng-click="stopRecording()">Stop</a>
         </li>
       </ul>
     </div>
