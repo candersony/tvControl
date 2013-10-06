@@ -10,6 +10,9 @@ function describeInterface(name, interfaceDefinition, getImplementationInstance)
       if(angular['is' + type](property)){
         return type;
       }
+      if(typeof property === 'boolean'){
+        return 'Boolean';
+      }
     }
 
     return null;
@@ -28,8 +31,8 @@ function describeInterface(name, interfaceDefinition, getImplementationInstance)
       it('should have the property "' + propertyName + '" of type ' + type, function(){
         var implementationInstance = getImplementationInstance();
 
-        if(!angular['is' + type](implementationInstance[propertyName])){
-          expect(propertyName).toBe(type);
+        if((type === 'Boolean' && typeof implementationInstance[propertyName] !== 'boolean') || !angular['is' + type](implementationInstance[propertyName])){
+          expect(name + '.' + propertyName).toBe(type);
         }
       });
     });
