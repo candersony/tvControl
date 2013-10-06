@@ -35,17 +35,16 @@ angular.module('tvControlApp')
       };
     })();
 
-    var recording = false;
-
+    $scope.isRecording = false;
     $scope.currentMacros = [];
 
     $scope.startRecording = function(){
-      recording = true;
+      $scope.isRecording = true;
       commandRecorder.clear();
     };
 
     $scope.stopRecording = function(){
-      recording = false;
+      $scope.isRecording = false;
       var macro = commandRecorder.getCommands();
       $scope.currentMacros.push(macro);
       saveMacro(macro);
@@ -56,7 +55,7 @@ angular.module('tvControlApp')
     }
 
     function recordCommand(device, command){
-      if(recording){
+      if($scope.isRecording){
         commandRecorder.addCommand(device, command);
       }
     }
