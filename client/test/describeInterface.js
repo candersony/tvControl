@@ -29,9 +29,17 @@ function describeInterface(name, interfaceDefinition, getImplementationInstance)
 
       var type = getType(property);
       it('should have the property "' + propertyName + '" of type ' + type, function(){
-        var implementationInstance = getImplementationInstance();
+        var implementationInstance = getImplementationInstance(),
+            propertyIsIncorrect = false;
 
-        if((type === 'Boolean' && typeof implementationInstance[propertyName] !== 'boolean') || !angular['is' + type](implementationInstance[propertyName])){
+        if(type === 'Boolean'){
+          propertyIsIncorrect = typeof implementationInstance[propertyName] !== 'boolean';
+        }
+        else{
+          propertyIsIncorrect = !angular['is' + type](implementationInstance[propertyName]);
+        }
+
+        if(propertyIsIncorrect){
           expect(name + '.' + propertyName).toBe(type);
         }
       });
