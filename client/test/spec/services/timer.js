@@ -7,7 +7,7 @@ describe('Service: timer', function () {
 
   beforeEach(module(function($provide) {
     $provide.service('date', function(){
-      var currentTime = 0;
+      var currentTime = 200;
 
       return {
         getCurrentTime: function(){
@@ -24,7 +24,7 @@ describe('Service: timer', function () {
       getTimerInstance = function() { return timer; };
 
   beforeEach(inject(function($injector) {
-    timer = $injector.get('Timer');
+    timer = $injector.get('timer');
   }));
 
   describeInterface('timer', {
@@ -41,6 +41,17 @@ describe('Service: timer', function () {
       var duration = timer.getRecordedDuration();
 
       expect(duration).toBe(200);
+    });
+
+    it('should not change the recorded duration if stop is called before start', function () {
+      var duration = timer.getRecordedDuration();
+
+      expect(duration).toBe(0);
+
+      timer.stop();
+
+      duration = timer.getRecordedDuration();
+      expect(duration).toBe(0);
     });
   });
 });

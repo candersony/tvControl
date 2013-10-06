@@ -1,16 +1,21 @@
 'use strict';
 
 angular.module('tvControlApp')
-  .service('Timer', ['date', function (date) {
+  .service('timer', ['date', function (date) {
     var startTime = null,
-      stopTime = null;
+      stopTime = null,
+        timerStarted = false;
 
     return {
       start: function(){
+        timerStarted = true;
         startTime = date.getCurrentTime();
       },
       stop: function(){
-        stopTime = date.getCurrentTime();
+        if(timerStarted) {
+          timerStarted = false;
+          stopTime = date.getCurrentTime();
+        }
       },
       getRecordedDuration: function(){
         return stopTime - startTime;
