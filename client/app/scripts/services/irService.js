@@ -6,12 +6,6 @@ function irService($http){
     });
   }
 
-  function getCommands(){
-    return $http.get('/ir/commands').then(function (response) {
-      return response.data;
-    });
-  }
-
   function sendCommand(deviceName, command){
     var uriEncoded = {
         deviceName: encodeURIComponent(deviceName),
@@ -50,7 +44,6 @@ function irService($http){
   }
   return {
     getDevices: getDevices,
-    getCommands: getCommands,
     sendCommand: sendCommand,
     onSendCommand: onSendCommand,
     saveMacro: saveMacro,
